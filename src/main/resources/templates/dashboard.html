@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Star Arts Admin</title>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-6">
+            <h1 class="text-3xl font-bold text-indigo-600">📸 Star Arts Admin</h1>
+            <p class="text-gray-500">Rental System</p>
+        </header>
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <form th:action="@{/rent}" th:object="${newRental}" method="post" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="text" th:field="*{customerName}" placeholder="Customer Name" class="border p-2 rounded" required>
+                <input type="text" th:field="*{customerPhone}" placeholder="Phone" class="border p-2 rounded" required>
+                <input type="text" th:field="*{itemName}" placeholder="Equipment" class="border p-2 rounded" required>
+                <input type="text" th:field="*{referredBy}" placeholder="Referred By" class="border p-2 rounded">
+                <input type="number" th:field="*{deposit}" placeholder="Deposit" class="border p-2 rounded">
+                <button type="submit" class="bg-indigo-600 text-white p-2 rounded">Start Rental</button>
+            </form>
+        </div>
+        <div th:each="r : ${rentals}" th:if="${r.status == 'Active'}" class="bg-white p-4 rounded-lg shadow mb-3 flex justify-between items-center">
+            <div>
+                <p class="font-bold" th:text="${r.itemName}"></p>
+                <p class="text-sm text-gray-600" th:text="${r.customerName} + ' | Ref: ' + ${r.referredBy}"></p>
+            </div>
+            <form th:action="@{/return/{id}(id=${r.id})}" method="post">
+                <button class="bg-green-500 text-white px-4 py-2 rounded">Return</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
